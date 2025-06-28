@@ -83,50 +83,6 @@ public class AutoTest2 extends LinearOpMode {
   }
 
   /**
-   * This sample contains the bare minimum Blocks for any regular OpMode. The 3 blue
-   * Comment Blocks show where to place Initialization code (runs once, after touching the
-   * DS INIT button, and before touching the DS Start arrow), Run code (runs once, after
-   * touching Start), and Loop code (runs repeatedly while the OpMode is active, namely not
-   * Stopped).
-   */
-  @Override
-  public void runOpMode() {
-    FrontRight = hardwareMap.get(DcMotor.class, "FrontRight");
-    BackRight = hardwareMap.get(DcMotor.class, "BackRight");
-    FrontLeft = hardwareMap.get(DcMotor.class, "FrontLeft");
-    BackLeft = hardwareMap.get(DcMotor.class, "BackLeft");
-    rightServo = hardwareMap.get(Servo.class, "rightServo");
-    leftServo = hardwareMap.get(Servo.class, "leftServo");
-    arm1 = hardwareMap.get(DcMotor.class, "arm1");
-
-    // Put initialization blocks here.
-    BackLeft.setDirection(DcMotor.Direction.REVERSE);
-    FrontLeft.setDirection(DcMotor.Direction.REVERSE);
-    waitForStart();
-    if (opModeIsActive()) {
-      servoOpen();
-      moveForward();
-      sleep(6000);
-      turnLeft();
-      sleep(2100);
-      moveForward();
-      sleep(2000);
-      stopRobot();
-      sleep(1000);
-      servoClose();
-      sleep(1000);
-      arm1.setPower(-0.5);
-      sleep(1400);
-      turnRight();
-      sleep(2200);
-      downRightDiagonal();
-      sleep(5000);
-      moveBackward();
-      sleep(4000);
-    }
-  }
-
-  /**
    * Describe this function...
    */
   private void strafeLeft() {
@@ -185,4 +141,48 @@ public class AutoTest2 extends LinearOpMode {
     FrontLeft.setPower(0);
     BackLeft.setPower(-0.2);
   }
+  /**
+   * This sample contains the bare minimum Blocks for any regular OpMode. The 3 blue
+   * Comment Blocks show where to place Initialization code (runs once, after touching the
+   * DS INIT button, and before touching the DS Start arrow), Run code (runs once, after
+   * touching Start), and Loop code (runs repeatedly while the OpMode is active, namely not
+   * Stopped).
+   */
+  @Override
+  public void runOpMode() {
+    FrontRight = hardwareMap.get(DcMotor.class, "FrontRight");
+    BackRight = hardwareMap.get(DcMotor.class, "BackRight");
+    FrontLeft = hardwareMap.get(DcMotor.class, "FrontLeft");
+    BackLeft = hardwareMap.get(DcMotor.class, "BackLeft");
+    rightServo = hardwareMap.get(Servo.class, "rightServo");
+    leftServo = hardwareMap.get(Servo.class, "leftServo");
+    arm1 = hardwareMap.get(DcMotor.class, "arm1");
+
+    // Put initialization blocks here.
+    BackLeft.setDirection(DcMotor.Direction.REVERSE);
+    FrontLeft.setDirection(DcMotor.Direction.REVERSE);
+    waitForStart();
+    if (opModeIsActive()) {
+      servoOpen();
+      moveForward();
+      sleep(6000);
+      turnLeft();
+      sleep(2100);
+      moveForward();
+      sleep(2000);
+      stopRobot();
+      sleep(1000);
+      servoClose();
+      sleep(1000);
+      arm1.setPower(-0.5);
+      sleep(1400);
+      turnRight();
+      sleep(2200);
+      downRightDiagonal();
+      sleep(5000);
+      moveBackward();
+      sleep(4000);
+    }
+  }
+
 }
