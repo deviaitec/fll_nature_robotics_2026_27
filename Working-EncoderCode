@@ -49,7 +49,7 @@ public class AjayEncoderTest extends LinearOpMode {
         backright.setVelocity(600);
         frontright.setVelocity(600);
         frontleft.setVelocity(600);
-        
+        //The sleep time must be longer than the time it takes for the motors to move. 
         sleep(7500);
         
         telemetry.addData("key", "Moved Forward");
