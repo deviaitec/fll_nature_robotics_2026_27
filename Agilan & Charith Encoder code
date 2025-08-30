@@ -1,0 +1,110 @@
+package org.firstinspires.ftc.teamcode;
+// import lines were omitted. OnBotJava will add them automatically.
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotor;
+
+
+@Autonomous
+public class AgilanEncodertest extends LinearOpMode {
+    DcMotorEx backleft;
+    DcMotorEx backright;
+    DcMotorEx frontright;
+    DcMotorEx frontleft;
+    @Override
+    public void runOpMode() {
+        backleft = hardwareMap.get(DcMotorEx.class, "BackLeft");
+        backright = hardwareMap.get(DcMotorEx.class, "BackRight");
+        frontleft = hardwareMap.get(DcMotorEx.class, "FrontLeft");
+        frontright = hardwareMap.get(DcMotorEx.class, "FrontRight");
+        
+        // Reset the encoder during initialization
+        backleft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        backright.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        frontleft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        frontright.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        
+        frontleft.setDirection(DcMotor.Direction.REVERSE);
+        backleft.setDirection(DcMotor.Direction.REVERSE);
+        
+        telemetry.addData("key", "Before Wait for start");
+        telemetry.update();
+        
+        waitForStart();
+        
+        backleft.setTargetPosition(3000);
+        backright.setTargetPosition(3000);
+        frontright.setTargetPosition(3000);
+        frontleft.setTargetPosition(3000);
+        
+         // Switch to RUN_TO_POSITION mode
+        backleft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        backright.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        frontright.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        frontleft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        
+        backleft.setVelocity(538);
+        backright.setVelocity(538);
+        frontright.setVelocity(538);
+        frontleft.setVelocity(538);
+        
+        sleep(7500);
+        
+        telemetry.addData("key", "Moved Forward");
+        telemetry.update();
+       
+        // Reset the encoder during initialization
+        backleft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        backright.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        frontleft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        frontright.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        int frontleftPostition = frontleft.getCurrentPosition();
+        telemetry.addData("frontleftPostition", frontleft.getCurrentPosition());
+        telemetry.update();
+        
+        backleft.setTargetPosition(1300);
+        backright.setTargetPosition(-1300);
+        frontright.setTargetPosition(1300);
+        frontleft.setTargetPosition(-1300);
+
+        // // Switch to RUN_TO_POSITION mode
+        backleft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        backright.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        frontright.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        frontleft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        
+       
+        // //Start the motor moving by setting the max velocity to 200 ticks per second
+        backleft.setVelocity(538);
+        backright.setVelocity(538);
+        frontright.setVelocity(538);
+        frontleft.setVelocity(538);
+       
+        
+
+        
+        
+        
+        // While the Op Mode is running, show the motor's status via telemetry
+        while (opModeIsActive()) {
+            telemetry.addData("velocity", backleft.getVelocity());
+            telemetry.addData("position", backleft.getCurrentPosition());
+            telemetry.addData("is at target", !backleft.isBusy());
+            telemetry.update();
+            telemetry.addData("velocity", backright.getVelocity());
+            telemetry.addData("position", backright.getCurrentPosition());
+            telemetry.addData("is at target", !backright.isBusy());
+            telemetry.update();
+            telemetry.addData("velocity", frontright.getVelocity());
+            telemetry.addData("position", frontright.getCurrentPosition());
+            telemetry.addData("is at target", !frontright.isBusy());
+            telemetry.update();
+            telemetry.addData("velocity", frontleft.getVelocity());
+            telemetry.addData("position", frontleft.getCurrentPosition());
+            telemetry.addData("is at target", !frontleft.isBusy());
+            telemetry.update();
+        }
+    }
+}
