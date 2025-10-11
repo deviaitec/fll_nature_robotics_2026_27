@@ -1,21 +1,23 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.robotcore.external.JavaUtil;
 
-@TeleOp(name = "Main (Blocks to Java)")
-public class Main extends LinearOpMode {
+@TeleOp(name = "MainSped (Blocks to Java)")
+public class MainSped extends LinearOpMode {
 
   private DcMotor FrontLeft;
   private DcMotor BackLeft;
+  private DcMotor flywheelLeft;
+  private DcMotor intake1;
   private DcMotor FrontRight;
   private DcMotor BackRight;
-  private DcMotor arm1;
-  private Servo rightServo;
-  private Servo leftServo;
+  private DcMotor flywheelRight;
+  private CRServo RampServoLeft;
+  private CRServo RampServoRight;
 
   /**
    * This function is executed when this Op Mode is selected from the Driver Station.
@@ -29,17 +31,23 @@ public class Main extends LinearOpMode {
     double BackRight2;
     double FrontLeft2;
     double BackLeft2;
+    
 
     FrontLeft = hardwareMap.get(DcMotor.class, "FrontLeft");
     BackLeft = hardwareMap.get(DcMotor.class, "BackLeft");
+    flywheelLeft = hardwareMap.get(DcMotor.class, "flywheelLeft");
+    intake1 = hardwareMap.get(DcMotor.class, "intake1");
     FrontRight = hardwareMap.get(DcMotor.class, "FrontRight");
     BackRight = hardwareMap.get(DcMotor.class, "BackRight");
-    arm1 = hardwareMap.get(DcMotor.class, "arm1");
-    rightServo = hardwareMap.get(Servo.class, "rightServo");
-    leftServo = hardwareMap.get(Servo.class, "leftServo");
-
+    flywheelRight = hardwareMap.get(DcMotor.class, "flywheelRight");
+    RampServoLeft = hardwareMap.get(CRServo.class, "RampServoLeft");
+    RampServoRight = hardwareMap.get(CRServo.class, "RampServoRight");
+    
     FrontLeft.setDirection(DcMotor.Direction.REVERSE);
     BackLeft.setDirection(DcMotor.Direction.REVERSE);
+    flywheelLeft.setDirection(DcMotor.Direction.REVERSE);
+    intake1.setDirection(DcMotor.Direction.REVERSE);
+    RampServoRight.setDirection(CRServo.Direction.REVERSE);
     // Put initialization blocks here.
     telemetry.addData("isAcitve", "123");
     telemetry.update();
@@ -50,10 +58,10 @@ public class Main extends LinearOpMode {
         vertical = -gamepad1.right_stick_y;
         horizontol = gamepad1.right_stick_x;
         pivot = gamepad1.left_stick_x;
-        FrontRight2 = 0.6 * (-pivot + (vertical - horizontol));
-        BackRight2 = 0.6 * (-pivot + vertical + horizontol);
-        FrontLeft2 = 0.6 * (pivot + vertical + horizontol);
-        BackLeft2 = 0.6 * (pivot + (vertical - horizontol));
+        FrontRight2 = 0.8 * (-pivot + (vertical - horizontol));
+        BackRight2 = 0.8 * (-pivot + vertical + horizontol);
+        FrontLeft2 = 0.8 * (pivot + vertical + horizontol);
+        BackLeft2 = 0.8 * (pivot + (vertical - horizontol));
         telemetry.addData("FrontRight", Double.parseDouble(JavaUtil.formatNumber(FrontRight2, 1)));
         telemetry.addData("BackRight", Double.parseDouble(JavaUtil.formatNumber(BackRight2, 1)));
         telemetry.addData("FrontLeft", Double.parseDouble(JavaUtil.formatNumber(FrontLeft2, 1)));
@@ -62,25 +70,26 @@ public class Main extends LinearOpMode {
         BackRight.setPower(BackRight2);
         FrontLeft.setPower(FrontLeft2);
         BackLeft.setPower(BackLeft2);
+        if (gamepad1.a) {
+          flywheelLeft.setPower(1);
+          flywheelRight.setPower(1);
+        } else {
+          flywheelLeft.setPower(0);
+          flywheelRight.setPower(0);
+        }
+        if (gamepad1.x) {
+          intake1.setPower(1);
+        } else {
+          intake1.setPower(0);
+        }
+        if (gamepad1.x) {
+          RampServoLeft.setPower(1);
+          RampServoRight.setPower(1);
+        } else {
+          RampServoLeft.setPower(0);
+          RampServoRight.setPower(0);
+        }
         telemetry.update();
-        if (gamepad1.right_bumper) {
-          arm1.setPower(-1);
-        } else {
-          arm1.setPower(0);
-        }
-        if (gamepad1.left_bumper) {
-          arm1.setPower(0.2467);
-        } else {
-          arm1.setPower(0);
-        }
-        if (gamepad1.dpad_up) {
-          rightServo.setPosition(1);
-          leftServo.setPosition(0);
-        }
-        if (gamepad1.dpad_down) {
-          rightServo.setPosition(0);
-          leftServo.setPosition(1);
-        }
       }
     }
   }
