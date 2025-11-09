@@ -1,29 +1,27 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.CRServo;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.robotcore.external.JavaUtil;
 
-@TeleOp(name = "MainSped (Blocks to Java)")
-public class MainSped extends LinearOpMode {
+@TeleOp(name = "Flywheel test v1 (FlywheelTest)")
+public class FlywheelTest extends LinearOpMode {
 
+  private DcMotor flyWheel;
+  private DcMotor intake1;
   private DcMotor FrontLeft;
   private DcMotor BackLeft;
-  private DcMotor flywheelLeft;
-  private DcMotor intake1;
   private DcMotor FrontRight;
   private DcMotor BackRight;
-  private DcMotor flywheelRight;
-  private CRServo RampServoLeft;
-  private CRServo RampServoRight;
-
+  private DcMotor RightFlap;
+ 
   /**
    * This function is executed when this Op Mode is selected from the Driver Station.
    */
   @Override
   public void runOpMode() {
+
     float vertical;
     float horizontol;
     float pivot;
@@ -32,29 +30,20 @@ public class MainSped extends LinearOpMode {
     double FrontLeft2;
     double BackLeft2;
     
-
+    flyWheel = hardwareMap.get(DcMotor.class, "flywheelv1");
+    intake1 = hardwareMap.get(DcMotor.class, "intake1");
     FrontLeft = hardwareMap.get(DcMotor.class, "FrontLeft");
     BackLeft = hardwareMap.get(DcMotor.class, "BackLeft");
-    flywheelLeft = hardwareMap.get(DcMotor.class, "flywheelLeft");
-    intake1 = hardwareMap.get(DcMotor.class, "intake1");
     FrontRight = hardwareMap.get(DcMotor.class, "FrontRight");
     BackRight = hardwareMap.get(DcMotor.class, "BackRight");
-    flywheelRight = hardwareMap.get(DcMotor.class, "flywheelRight");
-    RampServoLeft = hardwareMap.get(CRServo.class, "RampServoLeft");
-    RampServoRight = hardwareMap.get(CRServo.class, "RampServoRight");
+    RightFlap = hardwareMap.get(DcMotor.class, "RightFlap");
+
     
-    FrontLeft.setDirection(DcMotor.Direction.REVERSE);
-    BackLeft.setDirection(DcMotor.Direction.REVERSE);
-    flywheelLeft.setDirection(DcMotor.Direction.REVERSE);
-    intake1.setDirection(DcMotor.Direction.REVERSE);
-    RampServoRight.setDirection(CRServo.Direction.REVERSE);
-    // Put initialization blocks here.
-    telemetry.addData("isAcitve", "123");
-    telemetry.update();
     waitForStart();
     if (opModeIsActive()) {
       // Put run blocks here.
       while (opModeIsActive()) {
+       
         vertical = -gamepad1.right_stick_y;
         horizontol = gamepad1.right_stick_x;
         pivot = gamepad1.left_stick_x;
@@ -70,26 +59,46 @@ public class MainSped extends LinearOpMode {
         BackRight.setPower(BackRight2);
         FrontLeft.setPower(FrontLeft2);
         BackLeft.setPower(BackLeft2);
-        if (gamepad1.a) {
-          flywheelLeft.setPower(1);
-          flywheelRight.setPower(1);
+        
+        FrontLeft.setDirection(DcMotor.Direction.REVERSE);
+        BackLeft.setDirection(DcMotor.Direction.REVERSE);
+        
+        if (gamepad1.left_bumper) {
+          flyWheel.setPower(-1);
+          
         } else {
-          flywheelLeft.setPower(0);
-          flywheelRight.setPower(0);
-        }
-        if (gamepad1.x) {
+          flyWheel.setPower(0);
+          
+        }  
+        if (gamepad1.right_bumper) {
+          flyWheel.setPower(1);
+          
+        } else {
+          flyWheel.setPower(0);
+          
+        }  
+        if (gamepad1.a) {
           intake1.setPower(1);
+          
         } else {
           intake1.setPower(0);
+         
         }
-        if (gamepad1.x) {
-          RampServoLeft.setPower(1);
-          RampServoRight.setPower(1);
+        if (gamepad1.b) {
+          intake1.setPower(-1);
+          
         } else {
-          RampServoLeft.setPower(0);
-          RampServoRight.setPower(0);
+          intake1.setPower(0);
+         
         }
-        telemetry.update();
+        if (gamepad1.a) {
+          RightFlap.setPower(-1);
+          
+        } else {
+          RightFlap.setPower(0);
+         
+        }
+        
       }
     }
   }
