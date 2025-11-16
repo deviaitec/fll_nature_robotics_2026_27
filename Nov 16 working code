@@ -44,8 +44,8 @@ public class FlywheelTest extends LinearOpMode {
       // Put run blocks here.
       while (opModeIsActive()) {
        
-        vertical = -gamepad1.right_stick_y;
-        horizontol = gamepad1.right_stick_x;
+        vertical = gamepad1.right_stick_y;
+        horizontol = -gamepad1.right_stick_x;
         pivot = gamepad1.left_stick_x;
         FrontRight2 = 0.8 * (-pivot + (vertical - horizontol));
         BackRight2 = 0.8 * (-pivot + vertical + horizontol);
@@ -63,14 +63,14 @@ public class FlywheelTest extends LinearOpMode {
         FrontLeft.setDirection(DcMotor.Direction.REVERSE);
         BackLeft.setDirection(DcMotor.Direction.REVERSE);
         
-        if (gamepad1.left_bumper) {
+        if (gamepad1.right_bumper) {
           flyWheel.setPower(-1);
           
         } else {
           flyWheel.setPower(0);
           
         }  
-        if (gamepad1.right_bumper) {
+        if (gamepad1.left_bumper) {
           flyWheel.setPower(1);
           
         } else {
@@ -91,8 +91,8 @@ public class FlywheelTest extends LinearOpMode {
           intake1.setPower(0);
          
         }
-        if (gamepad1.a) {
-          RightFlap.setPower(-1);
+        if (gamepad1.dpad_up) {
+          RightFlap.setPower(1);
           
         } else {
           RightFlap.setPower(0);
