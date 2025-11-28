@@ -1,0 +1,115 @@
+package org.firstinspires.ftc.teamcode;
+
+import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import org.firstinspires.ftc.robotcore.external.JavaUtil;
+
+@TeleOp(name = "MainTeleOpNov22")
+public class FlywheelTest extends LinearOpMode {
+
+  private DcMotor flyWheel;
+  private DcMotor intake1;
+  private DcMotor FrontLeft;
+  private DcMotor BackLeft;
+  private DcMotor FrontRight;
+  private DcMotor BackRight;
+  private DcMotor RightFlap;
+  private Servo Gate;
+  
+  private boolean servoAtPosition1 = false; 
+  private boolean prevButtonState = false;
+  
+  private final double POSITION_ONE = 0; 
+  private final double POSITION_TWO = 1; 
+  
+  /**
+   * This function is executed when this Op Mode is selected from the Driver Station.
+   */
+  @Override
+  public void runOpMode() {
+
+    float vertical;
+    float horizontol;
+    float pivot;
+    double FrontRight2;
+    double BackRight2;
+    double FrontLeft2;
+    double BackLeft2;
+    
+    
+    flyWheel = hardwareMap.get(DcMotor.class, "flywheelv1");
+    intake1 = hardwareMap.get(DcMotor.class, "intake1");
+    FrontLeft = hardwareMap.get(DcMotor.class, "FrontLeft");
+    BackLeft = hardwareMap.get(DcMotor.class, "BackLeft");
+    FrontRight = hardwareMap.get(DcMotor.class, "FrontRight");
+    BackRight = hardwareMap.get(DcMotor.class, "BackRight");
+    RightFlap = hardwareMap.get(DcMotor.class, "RightFlap");
+    Gate = hardwareMap.get(Servo.class, "Gate");
+    
+    Gate.setPosition(POSITION_ONE); 
+    servoAtPosition1 = true;
+    
+    waitForStart();
+    if (opModeIsActive()) {
+      // Put run blocks here.
+      while (opModeIsActive()) {
+       
+        vertical = gamepad1.right_stick_y;
+        horizontol = -gamepad1.right_stick_x;
+        pivot = gamepad1.left_stick_x;
+        FrontRight2 = 0.8 * (-pivot + (vertical - horizontol));
+        BackRight2 = 0.8 * (-pivot + vertical + horizontol);
+        FrontLeft2 = 0.8 * (pivot + vertical + horizontol);
+        BackLeft2 = 0.8 * (pivot + (vertical - horizontol));
+        telemetry.addData("FrontRight", Double.parseDouble(JavaUtil.formatNumber(FrontRight2, 1)));
+        telemetry.addData("BackRight", Double.parseDouble(JavaUtil.formatNumber(BackRight2, 1)));
+        telemetry.addData("FrontLeft", Double.parseDouble(JavaUtil.formatNumber(FrontLeft2, 1)));
+        telemetry.addData("BackLeft", Double.parseDouble(JavaUtil.formatNumber(BackLeft2, 1)));
+        FrontRight.setPower(FrontRight2);
+        BackRight.setPower(BackRight2);
+        FrontLeft.setPower(FrontLeft2);
+        BackLeft.setPower(BackLeft2);
+        
+        FrontLeft.setDirection(DcMotor.Direction.REVERSE);
+        BackLeft.setDirection(DcMotor.Direction.REVERSE);
+        
+        if (gamepad1.right_bumper) {
+          flyWheel.setPower(-1);
+          
+        } else {
+          flyWheel.setPower(0);
+          
+        }  
+        if (gamepad1.a) {
+          intake1.setPower(1);
+          
+        } else {
+          intake1.setPower(0);
+         
+        }
+        if (gamepad1.x) {
+          RightFlap.setPower(1);
+          
+        } else {
+          RightFlap.setPower(0);
+         
+        }
+        if (gamepad1.b && !prevButtonState) {
+                if (servoAtPosition1) {
+                    Gate.setPosition(POSITION_TWO);
+                    servoAtPosition1 = false;
+                } else {
+                    Gate.setPosition(POSITION_ONE);
+                    servoAtPosition1 = true;
+                }
+                
+                sleep(200); 
+            }
+            
+            prevButtonState = gamepad1.b; 
+      }
+    }
+  }
+}
