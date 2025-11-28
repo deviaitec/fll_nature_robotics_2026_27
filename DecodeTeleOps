@@ -1,3 +1,4 @@
+
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.Servo;
@@ -21,8 +22,8 @@ public class FlywheelTest extends LinearOpMode {
   private boolean servoAtPosition1 = false; 
   private boolean prevButtonState = false;
   
-  private final double POSITION_ONE = 0; 
-  private final double POSITION_TWO = 1; 
+  private final double POSITION_ONE = 1; 
+  private final double POSITION_TWO = 0; 
   
   /**
    * This function is executed when this Op Mode is selected from the Driver Station.
