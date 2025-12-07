@@ -77,8 +77,15 @@ public class FlywheelTest extends LinearOpMode {
         BackLeft.setDirection(DcMotor.Direction.REVERSE);
         
         if (gamepad1.right_bumper) {
-          flyWheel.setPower(-1);
+          flyWheel.setPower(99.2);
+        
+        } else {
+          flyWheel.setPower(0);
           
+        }  
+         if (gamepad1.left_bumper) {
+          flyWheel.setPower(1);
+        
         } else {
           flyWheel.setPower(0);
           
@@ -91,13 +98,13 @@ public class FlywheelTest extends LinearOpMode {
          
         }
         if (gamepad1.x) {
-          RightFlap.setPower(1);
+          RightFlap.setPower(-1);
           
         } else {
           RightFlap.setPower(0);
          
         }
-        if (gamepad1.b && !prevButtonState) {
+        if (gamepad1.dpad_left && !prevButtonState) {
                 if (servoAtPosition1) {
                     Gate.setPosition(POSITION_TWO);
                     servoAtPosition1 = false;
@@ -106,7 +113,7 @@ public class FlywheelTest extends LinearOpMode {
                     servoAtPosition1 = true;
                 }
                 
-                sleep(200); 
+                sleep(100); 
             }
             
             prevButtonState = gamepad1.b; 
