@@ -14,8 +14,8 @@ import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 
-@TeleOp(name = "TejaTeleOpsLeague3")
-public class TejaTeleOpsLeague3 extends LinearOpMode {
+@TeleOp(name = "3ballsTest")
+public class 3ballsTest extends LinearOpMode {
   /*
   Configuration:
 
@@ -49,7 +49,8 @@ public class TejaTeleOpsLeague3 extends LinearOpMode {
     private DcMotor intake1;
     private DcMotor rightFlap;
     private Servo gate;
-
+    
+    
     private boolean servoAtPosition1 = false;
     private boolean prevButtonState = false;
     private boolean prevButtonState2 = false;
@@ -83,7 +84,7 @@ public class TejaTeleOpsLeague3 extends LinearOpMode {
         intake1 = hardwareMap.get(DcMotor.class, "intake1");
         rightFlap = hardwareMap.get(DcMotor.class, "RightFlap");
         gate = hardwareMap.get(Servo.class, "Gate");
-
+        
         flyWheel.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         frontRight.setDirection(DcMotor.Direction.REVERSE);
         backRight.setDirection(DcMotor.Direction.REVERSE);
@@ -136,7 +137,11 @@ public class TejaTeleOpsLeague3 extends LinearOpMode {
                     }
                     sleep(200); //what does sleep do here?
                 }
-
+                // if (flyWheel.velocity <= 1550 ){
+                //     gate.setPosition(POSITION_TWO);
+                // }
+                    
+                
                 prevButtonState2 = gamepad1.left_bumper;
 
                 if (gamepad1.y) {
