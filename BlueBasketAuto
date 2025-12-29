@@ -1,0 +1,102 @@
+package org.firstinspires.ftc.teamcode;
+
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
+
+@Autonomous(name="BlueBasketAuto")
+public class BlueBasketAuto extends LinearOpMode {
+
+    private DcMotor FrontLeft;
+    private DcMotor BackLeft;
+    private DcMotor FrontRight;
+    private DcMotor BackRight;
+    private DcMotor RightFlap;
+    private Servo Gate;
+    private DcMotor flyWheel;
+    private DcMotor intake1;
+
+    private boolean servoAtPosition1 = false;
+    private boolean prevButtonState = false;
+
+    private final double POSITION_CLOSE = 1;
+    private final double POSITION_OPEN = 0;
+    private void moveToStartFromBlueBasket() {
+        ((DcMotorEx) flyWheel).setVelocity(1600);
+        ((DcMotorEx) FrontLeft).setVelocity(2050);
+        ((DcMotorEx) BackLeft).setVelocity(-2050);
+        ((DcMotorEx) FrontRight).setVelocity(-2050);
+        ((DcMotorEx) BackRight).setVelocity(2050);
+        telemetry.addData("Running moveToStartFromBlueBasket", ((DcMotorEx) flyWheel).getVelocity());
+        sleep(1300);
+        //og1300
+        ((DcMotorEx) FrontLeft).setVelocity(00);
+        ((DcMotorEx) BackLeft).setVelocity(00);
+        ((DcMotorEx) FrontRight).setVelocity(00);
+        ((DcMotorEx) BackRight).setVelocity(00);
+    }
+    private void shootThreeBalls() {
+        intake1.setPower(1);
+        RightFlap.setPower(-1);
+        telemetry.addData("Running shootThreeBalls", ((DcMotorEx) flyWheel).getVelocity());
+        sleep(2000);
+
+        intake1.setPower(0);
+        RightFlap.setPower(0);
+
+        flyWheel.setPower(0);
+    }
+    private void moveOutsideShootingZoneForBlueBasket() {
+        ((DcMotorEx) FrontLeft).setVelocity(-1525);
+        ((DcMotorEx) BackLeft).setVelocity(-1525);
+        ((DcMotorEx) FrontRight).setVelocity(-1525);
+        ((DcMotorEx) BackRight).setVelocity(-1525);
+
+        sleep(200);
+        telemetry.addData("running moveOutsideShootingZoneForBlueBasket", ((DcMotorEx) flyWheel).getVelocity());
+        ((DcMotorEx) FrontLeft).setVelocity(00);
+        ((DcMotorEx) BackLeft).setVelocity(00);
+        ((DcMotorEx) FrontRight).setVelocity(00);
+        ((DcMotorEx) BackRight).setVelocity(00);
+
+        ((DcMotorEx) flyWheel).setVelocity(0);
+    }
+    public final void autoInit(){
+        FrontLeft  = hardwareMap.get(DcMotor.class, "FrontLeft");
+        BackLeft   = hardwareMap.get(DcMotor.class, "BackLeft");
+        FrontRight = hardwareMap.get(DcMotor.class, "FrontRight");
+        BackRight  = hardwareMap.get(DcMotor.class, "BackRight");
+        flyWheel = hardwareMap.get(DcMotor.class, "flywheelv1");
+        intake1 = hardwareMap.get(DcMotor.class, "intake1");
+        RightFlap = hardwareMap.get(DcMotor.class, "RightFlap");
+        Gate = hardwareMap.get(Servo.class, "Gate");
+
+        FrontLeft.setDirection(DcMotor.Direction.REVERSE);
+        BackLeft.setDirection(DcMotor.Direction.REVERSE);
+        flyWheel.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        
+    }
+    @Override
+    public void runOpMode() {
+    
+        autoInit();
+        
+
+        Gate.setPosition(POSITION_OPEN);
+        servoAtPosition1 = true;
+        waitForStart();
+
+        if (opModeIsActive()) {
+
+            // start spinning flywheel
+            // flyWheel.setPower(98.4);
+            moveToStartFromBlueBasket();
+
+            shootThreeBalls();
+
+            moveOutsideShootingZoneForBlueBasket();
+        }
+    }
+}
