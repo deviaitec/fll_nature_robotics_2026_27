@@ -20,7 +20,6 @@ public class BlueWallAuto extends LinearOpMode {
     //intake1
     private DcMotor surgicalTubingIntake;
 
-    private boolean launchSequence = false;
     private boolean servoAtPosition1 = false;
     private boolean prevButtonState = false;
 
@@ -58,21 +57,18 @@ public class BlueWallAuto extends LinearOpMode {
         ((DcMotorEx) BackRight).setVelocity(00);
     }
 
-    private void initiateLaunchSequence(){
-
-        launchSequence = true;
-        //  intake1.setPower(1);
-        //  RightFlap.setPower(-1);
-        //  sleep(1000);
+    private boolean isGateOpenAtCorrectVelocity(){
+        boolean isGateOpen = false;
         double flyWheelVelocity = flyWheel.getVelocity();
 
-        if (flyWheelVelocity <=1520 && flyWheelVelocity > 1480 && launchSequence){
+        if (flyWheelVelocity <=1520 && flyWheelVelocity > 1480 ){
             Gate.setPosition(POSITION_OPEN);
+            isGateOpen = true;
         }
         else{
             Gate.setPosition(POSITION_CLOSE);
         }
-
+        return isGateOpen;
     }
 
     private void rubberBandIntakeRollIn(){
@@ -104,19 +100,25 @@ public class BlueWallAuto extends LinearOpMode {
     }
 
     private void shootThreeBalls() {
-        Gate.setPosition(POSITION_OPEN);
-        surgicalTubingIntake.setPower(-1);
-        rubberBandIntake.setPower(0.80);
+        isGateOpenAtCorrectVelocity();
 
-        sleep(310);
+        //reverse intakes
+        surgicalTubingIntake.setPower(-1);
+        rubberBandIntake.setPower(00);
+
+        sleep(300);
+        //stop intakes
 
         surgicalTubingIntake.setPower(0);
         rubberBandIntake.setPower(0);
 
         sleep(200);
 
-        surgicalTubingIntake.setPower(1);
-        rubberBandIntake.setPower(-1);
+        //start intakes
+        if(isGateOpenAtCorrectVelocity()){
+            surgicalTubingIntake.setPower(1);
+            rubberBandIntake.setPower(-1);
+        }
 
         sleep(500);
 
@@ -124,10 +126,10 @@ public class BlueWallAuto extends LinearOpMode {
         rubberBandIntake.setPower(0);
 
         sleep(2000);
-
-        surgicalTubingIntake.setPower(1);
-        rubberBandIntake.setPower(-1);
-
+        if(isGateOpenAtCorrectVelocity()) {
+            surgicalTubingIntake.setPower(1);
+            rubberBandIntake.setPower(-1);
+        }
         sleep(500);
 
         surgicalTubingIntake.setPower(0);
@@ -135,8 +137,10 @@ public class BlueWallAuto extends LinearOpMode {
 
         sleep(2000);
 
-        surgicalTubingIntake.setPower(1);
-        rubberBandIntake.setPower(-1);
+        if(isGateOpenAtCorrectVelocity()) {
+            surgicalTubingIntake.setPower(1);
+            rubberBandIntake.setPower(-1);
+        }
 
         sleep(2000);
 
@@ -231,7 +235,7 @@ public class BlueWallAuto extends LinearOpMode {
         if (opModeIsActive()) {
 
             //start spinning flywheel
-            
+
             moveToStartFromBlueWall();
 
             shootThreeBalls();
