@@ -103,19 +103,59 @@ public class BlueWallAuto extends LinearOpMode {
     
     private void shootThreeBalls() {
         Gate.setPosition(POSITION_OPEN);
-        
-        // telemetry.addData("running ShootThreeBalls log1", ((DcMotorEx) flyWheel).getVelocity());
-        // telemetry.update();
-        // surgicalTubingIntakeRollOut();
-        // sleep(5000);
-        telemetry.addData("on top of intake", ((DcMotorEx) flyWheel).getVelocity());
-        telemetry.update();
-        
         intake1.setPower(-1);
-        // RightFlap.setPower(1);
+        RightFlap.setPower(0.80);
+        
+        sleep(310);
+
+        intake1.setPower(0);
+        RightFlap.setPower(0);
+        
+        sleep(200);
+                
+        intake1.setPower(1);
+        RightFlap.setPower(-1);
+
+        sleep(500);
+        
+        intake1.setPower(0);
+        RightFlap.setPower(0);
+
         sleep(2000);
-        telemetry.addData("below intake", ((DcMotorEx) flyWheel).getVelocity());
-        telemetry.update();
+
+        intake1.setPower(1);
+        RightFlap.setPower(-1);
+
+        sleep(500);
+        
+        intake1.setPower(0);
+        RightFlap.setPower(0);
+        
+        sleep(2000);
+        
+        intake1.setPower(1);
+        RightFlap.setPower(-1);
+
+        sleep(2000);
+        
+        intake1.setPower(0);
+        RightFlap.setPower(0);
+        
+        flyWheel.setPower(0);
+        // Gate.setPosition(POSITION_OPEN);
+        
+        // // telemetry.addData("running ShootThreeBalls log1", ((DcMotorEx) flyWheel).getVelocity());
+        // // telemetry.update();
+        // // surgicalTubingIntakeRollOut();
+        // // sleep(5000);
+        // telemetry.addData("on top of intake", ((DcMotorEx) flyWheel).getVelocity());
+        // telemetry.update();
+        
+        // intake1.setPower(-1);
+        // // RightFlap.setPower(1);
+        // sleep(2000);
+        // telemetry.addData("below intake", ((DcMotorEx) flyWheel).getVelocity());
+        // telemetry.update();
         // telemetry.addData("running ShootThreeBalls log2", ((DcMotorEx) flyWheel).getVelocity());
         // telemetry.update();
         // rubberBandIntakeStop();
@@ -182,21 +222,21 @@ public class BlueWallAuto extends LinearOpMode {
         autoInit();
         
 
-        // Gate.setPosition(POSITION_CLOSE);
+        Gate.setPosition(POSITION_CLOSE);
         servoAtPosition1 = true;
         waitForStart();
 
         if (opModeIsActive()) {
 
-            // start spinning flywheel
-            // flyWheel.setPower(98.4);
-            // moveToStartFromBlueWall();
+            //start spinning flywheel
+            flyWheel.setPower(98.4);
+            moveToStartFromBlueWall();
 
             shootThreeBalls();
 
-            // moveOutsideShootingZoneForBlueWall();
-            // ((DcMotorEx) flyWheel).setVelocity(0);
-            // Gate.setPosition(POSITION_CLOSE);
+            moveOutsideShootingZoneForBlueWall();
+            ((DcMotorEx) flyWheel).setVelocity(0);
+            Gate.setPosition(POSITION_CLOSE);
             telemetry.update();
         }
     }
