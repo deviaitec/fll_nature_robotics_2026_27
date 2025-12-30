@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.hardware.LED;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -19,6 +20,9 @@ public class BlueWallAuto extends LinearOpMode {
     private DcMotorEx flyWheel;
     //intake1
     private DcMotor surgicalTubingIntake;
+
+    private LED led_green_flywheel;
+    private LED led_red_flywheel;
 
     private boolean servoAtPosition1 = false;
     private boolean prevButtonState = false;
@@ -56,18 +60,27 @@ public class BlueWallAuto extends LinearOpMode {
         ((DcMotorEx) FrontRight).setVelocity(00);
         ((DcMotorEx) BackRight).setVelocity(00);
     }
-
-    private boolean isGateOpenAtCorrectVelocity(){
-        boolean isGateOpen = false;
+    private boolean isFlyWheelAtCorrectVelocity(){
         double flyWheelVelocity = flyWheel.getVelocity();
 
         if (flyWheelVelocity <=1520 && flyWheelVelocity > 1480 ){
-            Gate.setPosition(POSITION_OPEN);
-            isGateOpen = true;
+            return true;
         }
-        else{
-            Gate.setPosition(POSITION_CLOSE);
+        return false;
+    }
+    private boolean isGateOpenAtCorrectVelocity(){
+        boolean isGateOpen = false;
+        
+        while(!isFlyWheelAtCorrectVelocity()){
+            led_red_flywheel.on();
+            led_green_flywheel.off();
+            sleep(1000);
         }
+        led_red_flywheel.off();
+        led_green_flywheel.on();
+            
+        Gate.setPosition(POSITION_OPEN);
+        isGateOpen = true;
         return isGateOpen;
     }
 
@@ -104,7 +117,7 @@ public class BlueWallAuto extends LinearOpMode {
 
         //reverse intakes
         surgicalTubingIntake.setPower(-1);
-        rubberBandIntake.setPower(00);
+        rubberBandIntake.setPower(1);
 
         sleep(300);
         //stop intakes
@@ -212,13 +225,14 @@ public class BlueWallAuto extends LinearOpMode {
         surgicalTubingIntake = hardwareMap.get(DcMotor.class, "intake1");
         rubberBandIntake = hardwareMap.get(DcMotor.class, "RightFlap");
         Gate = hardwareMap.get(Servo.class, "Gate");
+        led_red_flywheel = hardwareMap.get(LED.class, "led_red_flywheel");
+        led_green_flywheel = hardwareMap.get(LED.class, "led_green_flywheel");
+        led_red_flywheel.off();
+        led_green_flywheel.off();
 
         FrontLeft.setDirection(DcMotor.Direction.REVERSE);
         BackLeft.setDirection(DcMotor.Direction.REVERSE);
         flyWheel.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
-
-
-
 
     }
 
