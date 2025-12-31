@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.hardware.LED;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -15,8 +16,10 @@ public class BlueBasketAuto extends LinearOpMode {
     private DcMotor BackRight;
     private DcMotor RightFlap;
     private Servo Gate;
-    private DcMotor flyWheel;
+    private DcMotorEx flyWheel;
     private DcMotor intake1;
+    private LED led_red_flywheel;
+    private LED led_green_flywheel;
 
     private boolean servoAtPosition1 = false;
     private boolean prevButtonState = false;
@@ -24,11 +27,11 @@ public class BlueBasketAuto extends LinearOpMode {
     private final double POSITION_CLOSE = 1;
     private final double POSITION_OPEN = 0;
     private void moveToStartFromBlueBasket() {
-        ((DcMotorEx) flyWheel).setVelocity(1600);
-        ((DcMotorEx) FrontLeft).setVelocity(2050);
-        ((DcMotorEx) BackLeft).setVelocity(-2050);
-        ((DcMotorEx) FrontRight).setVelocity(-2050);
-        ((DcMotorEx) BackRight).setVelocity(2050);
+        ((DcMotorEx) flyWheel).setVelocity(1450);
+        ((DcMotorEx) FrontLeft).setVelocity(1900);
+        ((DcMotorEx) BackLeft).setVelocity(-1900);
+        ((DcMotorEx) FrontRight).setVelocity(-1900);
+        ((DcMotorEx) BackRight).setVelocity(1900);
         telemetry.addData("Running moveToStartFromBlueBasket", ((DcMotorEx) flyWheel).getVelocity());
         sleep(1300);
         //og1300
@@ -36,11 +39,72 @@ public class BlueBasketAuto extends LinearOpMode {
         ((DcMotorEx) BackLeft).setVelocity(00);
         ((DcMotorEx) FrontRight).setVelocity(00);
         ((DcMotorEx) BackRight).setVelocity(00);
+        sleep(1000);
     }
+    
+    
+        private boolean isFlyWheelAtCorrectVelocity(){
+        double flyWheelVelocity = flyWheel.getVelocity();
+        
+        if (flyWheelVelocity <=1470 && flyWheelVelocity > 1430 ){
+            return true;
+        }
+        return false;
+    }
+    private boolean isGateOpenAtCorrectVelocity(){
+        boolean isGateOpen = false;
+        while(!isFlyWheelAtCorrectVelocity()){
+            led_red_flywheel.off();
+            led_green_flywheel.on();
+            sleep(1000);
+        }
+        led_red_flywheel.on();
+        led_green_flywheel.off();
+            
+        Gate.setPosition(POSITION_OPEN);
+        isGateOpen = true;
+        return isGateOpen;
+    }
+    
     private void shootThreeBalls() {
-        intake1.setPower(1);
-        RightFlap.setPower(-1);
-        telemetry.addData("Running shootThreeBalls", ((DcMotorEx) flyWheel).getVelocity());
+        isGateOpenAtCorrectVelocity();
+        telemetry.addData("GateOpen return value",isGateOpenAtCorrectVelocity());
+        
+        intake1.setPower(-1);
+        RightFlap.setPower(1);
+        
+        sleep(310);
+
+        intake1.setPower(0);
+        RightFlap.setPower(0);
+        
+        if(isGateOpenAtCorrectVelocity()){
+            intake1.setPower(1);
+            RightFlap.setPower(-1);
+        }
+
+        sleep(500);
+
+        intake1.setPower(0);
+        RightFlap.setPower(0);
+
+        sleep(2000);
+        if(isGateOpenAtCorrectVelocity()) {
+            intake1.setPower(1);
+            RightFlap.setPower(-1);
+        }
+        sleep(500);
+
+        intake1.setPower(0);
+        RightFlap.setPower(0);
+
+        sleep(2000);
+
+        if(isGateOpenAtCorrectVelocity()) {
+            intake1.setPower(1);
+            RightFlap.setPower(-1);
+        }
+
         sleep(2000);
 
         intake1.setPower(0);
@@ -48,14 +112,17 @@ public class BlueBasketAuto extends LinearOpMode {
 
         flyWheel.setPower(0);
     }
+    
+
+    
     private void moveOutsideShootingZoneForBlueBasket() {
         ((DcMotorEx) FrontLeft).setVelocity(-1525);
         ((DcMotorEx) BackLeft).setVelocity(-1525);
         ((DcMotorEx) FrontRight).setVelocity(-1525);
         ((DcMotorEx) BackRight).setVelocity(-1525);
 
-        sleep(200);
-        telemetry.addData("running moveOutsideShootingZoneForBlueBasket", ((DcMotorEx) flyWheel).getVelocity());
+        sleep(300);
+        //telemetry.addData("running moveOutsideShootingZoneForBlueBasket", ((DcMotorEx) flyWheel).getVelocity());
         ((DcMotorEx) FrontLeft).setVelocity(00);
         ((DcMotorEx) BackLeft).setVelocity(00);
         ((DcMotorEx) FrontRight).setVelocity(00);
@@ -68,10 +135,13 @@ public class BlueBasketAuto extends LinearOpMode {
         BackLeft   = hardwareMap.get(DcMotor.class, "BackLeft");
         FrontRight = hardwareMap.get(DcMotor.class, "FrontRight");
         BackRight  = hardwareMap.get(DcMotor.class, "BackRight");
-        flyWheel = hardwareMap.get(DcMotor.class, "flywheelv1");
+        flyWheel = hardwareMap.get(DcMotorEx.class, "flywheelv1");
         intake1 = hardwareMap.get(DcMotor.class, "intake1");
         RightFlap = hardwareMap.get(DcMotor.class, "RightFlap");
         Gate = hardwareMap.get(Servo.class, "Gate");
+        led_red_flywheel = hardwareMap.get(LED.class, "led_red_flywheel");
+        led_green_flywheel = hardwareMap.get(LED.class, "led_green_flywheel");
+        
 
         FrontLeft.setDirection(DcMotor.Direction.REVERSE);
         BackLeft.setDirection(DcMotor.Direction.REVERSE);
@@ -84,7 +154,7 @@ public class BlueBasketAuto extends LinearOpMode {
         autoInit();
         
 
-        Gate.setPosition(POSITION_OPEN);
+        Gate.setPosition(POSITION_CLOSE);
         servoAtPosition1 = true;
         waitForStart();
 
@@ -93,10 +163,11 @@ public class BlueBasketAuto extends LinearOpMode {
             // start spinning flywheel
             // flyWheel.setPower(98.4);
             moveToStartFromBlueBasket();
-
+            // sleep(500);
             shootThreeBalls();
 
             moveOutsideShootingZoneForBlueBasket();
+            telemetry.update();
         }
     }
 }
