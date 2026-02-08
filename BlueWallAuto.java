@@ -29,17 +29,47 @@ public class BlueWallAuto extends LinearOpMode {
 
     private final double POSITION_CLOSE = 1;
     private final double POSITION_OPEN = 0;
+    
+    //Tournament values
+    // double flywheelVelocity= 1500;
+    
+    // double frontLeftVelocity = 2050;
+    // double backLeftVelocity = 2050;
+    // double frontRightVelocity = 2050;
+    // double backRightVelocity = 2050;
+    
+    
+    // double frontLeftVelocityTurn = 1025;
+    // double backLeftVelocityTurn = 1025;
+    // double frontRightVelocityTurn = -1025;
+    // double backRightVelocityTurn= -1025;
+    
+    
+    //Home values
+    double flywheelVelocity= 1500;
+    
+    double frontLeftVelocity = 2050;
+    double backLeftVelocity = 2050;
+    double frontRightVelocity = 2050;
+    double backRightVelocity = 2050;
+    
+    
+    double frontLeftVelocityTurn = 1025;
+    double backLeftVelocityTurn = 1025;
+    double frontRightVelocityTurn = -1025;
+    double backRightVelocityTurn= -1025;
+    
 
     private void moveToStartFromBlueWall() {
 
-        ((DcMotorEx) flyWheel).setVelocity(1500);
+        ((DcMotorEx) flyWheel).setVelocity(flywheelVelocity);
 
-        ((DcMotorEx) FrontLeft).setVelocity(2050);
-        ((DcMotorEx) BackLeft).setVelocity(2050);
-        ((DcMotorEx) FrontRight).setVelocity(2050);
-        ((DcMotorEx) BackRight).setVelocity(2050);
+        ((DcMotorEx) FrontLeft).setVelocity(frontLeftVelocity);
+        ((DcMotorEx) BackLeft).setVelocity(backLeftVelocity);
+        ((DcMotorEx) FrontRight).setVelocity(frontRightVelocity);
+        ((DcMotorEx) BackRight).setVelocity(backRightVelocity);
 
-        sleep(1400);
+        sleep(1480);
 
         ((DcMotorEx) FrontLeft).setVelocity(00);
         ((DcMotorEx) BackLeft).setVelocity(00);
@@ -48,12 +78,12 @@ public class BlueWallAuto extends LinearOpMode {
 
         sleep(300);
 
-        ((DcMotorEx) FrontLeft).setVelocity(1025);
-        ((DcMotorEx) BackLeft).setVelocity(1025);
-        ((DcMotorEx) FrontRight).setVelocity(-1025);
-        ((DcMotorEx) BackRight).setVelocity(-1025);
+        ((DcMotorEx) FrontLeft).setVelocity(frontLeftVelocityTurn);
+        ((DcMotorEx) BackLeft).setVelocity(backLeftVelocityTurn);
+        ((DcMotorEx) FrontRight).setVelocity(frontRightVelocityTurn);
+        ((DcMotorEx) BackRight).setVelocity(backRightVelocityTurn);
 
-        sleep(700);
+        sleep(500);
 
         ((DcMotorEx) FrontLeft).setVelocity(00);
         ((DcMotorEx) BackLeft).setVelocity(00);
@@ -63,7 +93,7 @@ public class BlueWallAuto extends LinearOpMode {
     private boolean isFlyWheelAtCorrectVelocity(){
         double flyWheelVelocity = flyWheel.getVelocity();
 
-        if (flyWheelVelocity <=1520 && flyWheelVelocity > 1480 ){
+        if (flyWheelVelocity <=1400 && flyWheelVelocity > 1350 ){
             return true;
         }
         return false;
@@ -232,7 +262,12 @@ public class BlueWallAuto extends LinearOpMode {
 
         FrontLeft.setDirection(DcMotor.Direction.REVERSE);
         BackLeft.setDirection(DcMotor.Direction.REVERSE);
+        flyWheel.setDirection(DcMotor.Direction.REVERSE);
         flyWheel.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        FrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        BackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        FrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        BackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
     }
 
